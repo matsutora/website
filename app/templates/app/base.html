@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">ホーム</a>
+        <a href="/about">自己紹介</a>
+    </div>
+    {% block content %}
+        コンテンツがありません
+    {% endblock content %}
+    <div class="footer">
+        <p>Copyright 2021-{% now "Y" %}</p>
+    </div>    
+</body>
+</html>
