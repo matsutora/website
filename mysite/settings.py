@@ -25,7 +25,7 @@ SECRET_KEY = '&@#tgib&dbcogit4-0uk3u9%+#i8zfxo4t%*(1hrsl0esx_n@v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["https://torawebsite.herokuapp.com/"]
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    "widget_tweaks",
     "app",
 ]
 
