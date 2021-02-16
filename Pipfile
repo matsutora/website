@@ -9,6 +9,7 @@ whitenoise = "*"
 django-widget-tweaks = "*"
 Pillow = "*"
 Django = "*"
+django-environ = "*"
 
 [requires]
 python_version = "3.9"

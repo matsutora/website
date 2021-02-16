@@ -20,15 +20,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4s6n87h#-tq6k7-_g(ui_(xi0e7ya^)lt8_k$4(w(+1osevy+x'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = ["*"]
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -121,21 +112,38 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-STATIC_URL = '/assets/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# デプロイ設定
+DEBUG = False
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+try:
+    from .local_settings import *
+except ImportError:
+    pass
 
-# 開発環境用
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# ローカル設定
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+    # # 開発環境用
+    # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+else:
+    import environ
+    env = environ.Env()
+    env.read_env(os.path.join(BASE_DIR, ".env"))
 
-# 本番用
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "smtp.gmail.com"
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = "xxx@gmail.com"
-# EMAIL_HOST_PASSWORD = "xxx"
-# EMAIL_USE_TLS = True
+    SECRET_KEY = env("SECRET_KEY")
+    ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
+
+    # 本番用
+    # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    # EMAIL_HOST = "smtp.gmail.com"
+    # EMAIL_PORT = 587
+    # EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+    # EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+    # EMAIL_USE_TLS = True
+
+    STATIC_ROOT = '/usr/share/nginx/html/static'
+    MEDIA_ROOT = '/usr/share/nginx/html/media'
